@@ -1,4 +1,5 @@
 import java.util.BitSet;
+import java.util.Random;
 import java.util.Scanner;
 
 public class PrimeFinder {
@@ -12,21 +13,21 @@ public class PrimeFinder {
             }
             String choice = "X";
             do {
-                System.out.println("Please enter \"Y\" to print the primes or \"N\" to just see the largest and processing time");
+                System.out.println("Please enter \"Y\" to print the primes, \"N\" to just see the largest, or \"R\" for a random prime and processing time");
                 choice = scan.next().trim().toUpperCase();
-            } while (!choice.equals("Y") && !choice.equals("N"));
+            } while (!choice.equals("Y") && !choice.equals("N") && !choice.equals("R"));
             BitSet sieve = new BitSet(n + 1);
             long startTime = System.nanoTime(); 
             markAllComposites(sieve);
             long endTime = System.nanoTime();
             if (choice.equals("Y")) {
-                for (int i = 2; i < n; i++) {
+                for (int i = 2; i <= n; i++) {
                     if (!sieve.get(i)) {
                         System.out.print(i + " ");
                     }
                 }
             }
-            else {
+            else if (choice.equals("N")) {
                 for (int i = n; i >= 2; i--) {
                     if (!sieve.get(i)) {
                         System.out.print(i);
@@ -34,10 +35,27 @@ public class PrimeFinder {
                     }
                 }
             }
+            else {
+                System.out.print(printRandom(sieve));
+            }
             System.out.println();
             System.out.println("Sieve completed in " + ((endTime - startTime) / 1000000) + "ms");
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    static int printRandom(BitSet sieve) {
+        int n = sieve.size();
+        Random rand = new Random();
+        int randomPoint = rand.nextInt(n);
+        int nearestAbove = sieve.nextClearBit(randomPoint);
+        int nearestBelow = sieve.previousClearBit(randomPoint);
+        if (nearestAbove - randomPoint < randomPoint - nearestBelow) {
+            return nearestAbove;
+        }
+        else {
+            return nearestBelow;
         }
     }
 
