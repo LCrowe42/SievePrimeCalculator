@@ -1,3 +1,4 @@
+import java.util.BitSet;
 import java.util.Scanner;
 
 public class PrimeFinder {
@@ -14,20 +15,20 @@ public class PrimeFinder {
                 System.out.println("Please enter \"Y\" to print the primes or \"N\" to just see the largest and processing time");
                 choice = scan.next().trim().toUpperCase();
             } while (!choice.equals("Y") && !choice.equals("N"));
-            boolean[] sieve = new boolean[n + 1];
+            BitSet sieve = new BitSet(n + 1);
             long startTime = System.nanoTime(); 
             markAllComposites(sieve);
             long endTime = System.nanoTime();
             if (choice.equals("Y")) {
-                for (int i = 2; i < sieve.length; i++) {
-                    if (!sieve[i]) {
+                for (int i = 2; i < n; i++) {
+                    if (!sieve.get(i)) {
                         System.out.print(i + " ");
                     }
                 }
             }
             else {
                 for (int i = n; i >= 2; i--) {
-                    if (!sieve[i]) {
+                    if (!sieve.get(i)) {
                         System.out.print(i);
                         break;
                     }
@@ -40,18 +41,18 @@ public class PrimeFinder {
         }
     }
 
-    static void markAllComposites(boolean[] sieve) {
-        int n = sieve.length;
+    static void markAllComposites(BitSet sieve) {
+        int n = sieve.size();
         int i = 2;
         while (i * i < n) {
             int j = i*i;
             while (j < n) {
-                sieve[j] = true;
+                sieve.set(j);
                 j += i;
             }
             do { 
                 i++;
-            } while (i < n && sieve[i]);
+            } while (i < n && sieve.get(i));
         }
     }
 }
