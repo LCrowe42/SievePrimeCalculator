@@ -12,8 +12,8 @@ public class PrimeFinder {
             String choice = "X";
             do {
                 System.out.println("Please enter \"Y\" to print the primes or \"N\" to just see the largest and processing time");
-                choice = scan.next().toUpperCase();
-            } while (!choice.contains("Y") && !choice.contains("N"));
+                choice = scan.next().trim().toUpperCase();
+            } while (!choice.equals("Y") && !choice.equals("N"));
             boolean[] sieve = new boolean[n + 1];
             long startTime = System.nanoTime(); 
             markAllComposites(sieve);
@@ -34,8 +34,7 @@ public class PrimeFinder {
                 }
             }
             System.out.println();
-            System.out.println("Primes generated in " + ((endTime - startTime) / 1000000) + "ms");
-            scan.close();
+            System.out.println("Sieve completed in " + ((endTime - startTime) / 1000000) + "ms");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -44,7 +43,7 @@ public class PrimeFinder {
     static void markAllComposites(boolean[] sieve) {
         int n = sieve.length;
         int i = 2;
-        while (i <= Math.sqrt(n)) {
+        while (i * i < n) {
             int j = i*i;
             while (j < n) {
                 sieve[j] = true;
