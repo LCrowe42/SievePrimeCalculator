@@ -45,10 +45,10 @@ public class PrimeFinder {
         int n = sieve.length;
         int i = 2;
         while (i <= Math.sqrt(n)) {
-            int j = i;
-            while (j+i < n) {
-                j += i;
+            int j = i*i;
+            while (j < n) {
                 sieve[j] = true;
+                j += i;
             }
             do { 
                 i++;
